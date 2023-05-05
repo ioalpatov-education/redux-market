@@ -9,3 +9,17 @@
   margin: 3rem;
   height: 100vh;
 }
+
+
+.market__form {
+  display: flex;
+  align-items: start;
+}
+
+.form__btn {
+  height: 30px;
+}
+
+.error-text {
+  color: #d80404;
+}

@@ -1,76 +1,83 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Button, Snackbar, Alert } from "@mui/material";
-import { useState, useContext } from "react";
-import { NewsContext } from "../../App";
-import { useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../actions/actionCreators";
 
-const authenticationFormSchema = Yup.object({
-  login: Yup.string().required("Обязательное поле"),
-  password: Yup.string().required("Обязательное поле"),
+const MarketFormSchema = Yup.object({
+  name: Yup.string().required("Обязательное поле"),
+  price: Yup.number()
+    .required("Обязательное поле")
+    .positive("Цена должна быть больше 0"),
+  description: Yup.string().required("Обязательное поле"),
 });
 
 const MarketForm = () => {
-  const { getProfile } = useContext(NewsContext);
-  const navigate = useNavigate();
-
-  const [error, setError] = useState(null);
-  const [open, setOpen] = useState(false);
-
   const initialValues = {
-    login: "",
-    password: "",
+    name: "",
+    price: "",
+    description: "",
   };
 
-  const handleClick = () => {
-    setOpen(true);
-  };
+  const dispatch = useDispatch();
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") return;
+  const handleSubmit = (values, actions) => {
+    const { name, price, description } = values;
+    dispatch(addProduct(name, price, description));
 
-    setOpen(false);
+    actions.resetForm();
   };
 
   return (
     <Formik
       initialValues={initialValues}
       enableReinitialize
-      validationSchema={authenticationFormSchema}
-      onSubmit={handleClick}
+      validationSchema={MarketFormSchema}
+      onSubmit={handleSubmit}
     >
-      <Form className="authentication__form">
+      <Form className="market__form">
         <div className="form-group">
           <Field
             className="form-field"
             type="text"
-            name="login"
-            placeholder="Username"
+            name="name"
+            placeholder="name"
           />
           <p className="error-text">
-            <ErrorMessage name="login" />
+            <ErrorMessage name="name" />
           </p>
         </div>
         <div className="form-group">
           <Field
             className="form-field"
-            type="password"
-            name="password"
-            placeholder="Password"
+            type="number"
+            name="price"
+            placeholder="price"
           />
           <p className="error-text">
-            <ErrorMessage name="password" />
+            <ErrorMessage name="price" />
           </p>
         </div>
-        <Button variant="outlined" color="success" type="submit">
-          Login
+        <div className="form-group">
+          <Field
+            className="form-field"
+            type="text"
+            name="description"
+            component="textarea"
+            placeholder="description"
+          />
+          <p className="error-text">
+            <ErrorMessage name="description" />
+          </p>
+        </div>
+        <Button
+          className="form__btn"
+          variant="outlined"
+          color="success"
+          type="submit"
+        >
+          Save
         </Button>
-
-        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-          <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-            {error}
-          </Alert>
-        </Snackbar>
       </Form>
     </Formik>
   );
