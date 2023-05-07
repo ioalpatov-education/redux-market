@@ -3,27 +3,48 @@ import * as Yup from "yup";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { addProduct } from "../actions/actionCreators";
+import { useState, useRef } from "react";
 
 const MarketFormSchema = Yup.object({
   name: Yup.string().required("Обязательное поле"),
   price: Yup.number()
     .required("Обязательное поле")
-    .positive("Цена должна быть больше 0"),
+    .positive("Цена должна бельше или равно 0"),
   description: Yup.string().required("Обязательное поле"),
+  count: Yup.number()
+    .required("Обязательное поле")
+    .positive("Кол-во должно бельше или равно 0"),
 });
 
 const MarketForm = () => {
+  const [file, setFile] = useState(null);
+  const fileInput = useRef();
+
   const initialValues = {
     name: "",
     price: "",
     description: "",
+    count: "",
+  };
+
+  const changeImageFile = () => {
+    const image = fileInput.current.files[0];
+    if (!image) {
+      setFile(null);
+    } else {
+      setFile({
+        file: window.URL.createObjectURL(image),
+        name: image.name,
+      });
+    }
   };
 
   const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
-    const { name, price, description } = values;
-    dispatch(addProduct(name, price, description));
+    const { name, price, description, count } = values;
+    const image = !!file ? file.file : null;
+    dispatch(addProduct(name, price, description, count, image));
 
     actions.resetForm();
   };
@@ -56,6 +77,40 @@ const MarketForm = () => {
           />
           <p className="error-text">
             <ErrorMessage name="price" />
+          </p>
+        </div>
+        <div className="form-group">
+          <Field
+            className="form-field"
+            type="number"
+            name="count"
+            placeholder="count"
+          />
+          <p className="error-text">
+            <ErrorMessage name="count" />
+          </p>
+        </div>
+        <div className="form-group">
+          <Button className="form-field" variant="contained" component="label">
+            {!!file && file.name ? file.name : "Выбери изображение"}
+            <input
+              className="form-field form-field--image"
+              onChange={changeImageFile}
+              ref={fileInput}
+              name="image"
+              type="file"
+              accept="image/*"
+            />
+          </Button>
+          {/* <FileField
+            className="form-field form-field--image"
+            name="image"
+            label="Выбери изображение"
+            accept="image/*"
+          /> */}
+
+          <p className="error-text">
+            <ErrorMessage name="count" />
           </p>
         </div>
         <div className="form-group">

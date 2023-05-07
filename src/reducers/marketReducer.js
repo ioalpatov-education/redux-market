@@ -8,22 +8,20 @@ const initialState = [
     description:
       "Умная колонка Яндекс Станция Макс с голосовым помощником Алисой, мощностью звучания 65 Вт, встроенным хабом управления Zigbee, беспроводной связью Wi-Fi (2.4 – 5 ГГц) и Bluetooth 4.2 и возможностью встраивания в экосистему Умного Дома от официального поставщика с гарантией от производителя. Яндекс Станция Макс — самая мощная модель умных колонок от отечественного IT-гиганта.",
     image: "https://i.pravatar.cc/300",
-    count: 4,
+    count: 0,
   },
 ];
 
 const serviceReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_PRODUCT: {
-      const { name, price, description } = action.payload;
+      const { image } = action.payload;
       return [
         ...state,
         {
+          ...action.payload,
+          image: !image ? "https://i.pravatar.cc/300" : image,
           id: nanoid(),
-          image: "https://i.pravatar.cc/300",
-          name,
-          price: Number(price),
-          description,
         },
       ];
     }

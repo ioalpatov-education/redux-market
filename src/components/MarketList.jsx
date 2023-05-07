@@ -6,12 +6,14 @@ const MarketList = () => {
 
   return (
     <>
-      {!!products.length
-        ? products.map((product) => {
+      {!!products.length ? (
+        <ul className="market-list">
+          {products.map((product) => {
             const { id } = product;
             return <MarketProduct key={id} id={id} />;
-          })
-        : null}
+          })}
+        </ul>
+      ) : null}
     </>
   );
 };

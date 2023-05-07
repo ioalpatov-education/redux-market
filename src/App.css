@@ -15,6 +15,16 @@
 .market__form {
   display: flex;
   align-items: start;
+  flex-direction: column;
+}
+
+.form-field,
+.form-group {
+  width: 100%;
+}
+
+.form-field--image {
+  display: none;
 }
 
 .form__btn {
@@ -22,7 +32,22 @@
 }
 
 .error-text {
+  margin-bottom: 0;
   color: #d80404;
+}
+
+.market-list {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.market-product {
+  width: 400px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .market__actions {
