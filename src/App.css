@@ -4,12 +4,13 @@
 
 .app {
   display: flex;
-  justify-content: center;
-  align-items: start;
+  justify-content: start;
+  flex-direction: column;
+  align-items: center;
   margin: 3rem;
   height: 100vh;
+  gap: 1rem;
 }
-
 
 .market__form {
   display: flex;
@@ -22,4 +23,10 @@
 
 .error-text {
   color: #d80404;
+}
+
+.market__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
